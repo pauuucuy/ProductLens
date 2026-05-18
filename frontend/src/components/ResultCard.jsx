@@ -1,7 +1,7 @@
 import ConfidenceBar from "./Barra"
 import TopPredictions from "./TopPredictions"
 
-function ResultCard({ result }) {
+function ResultCard({ result, setResult }) {
   return (
     <div style={{
       background: "#fff",
