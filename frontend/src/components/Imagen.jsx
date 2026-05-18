@@ -1,9 +1,15 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 
 function ImageUploader({ onUpload }) {
   const [preview, setPreview] = useState(null)
   const [dragging, setDragging] = useState(false)
   const inputRef = useRef(null)
+
+  // Cada vez que el componente se remonta (nueva key desde App.jsx), limpia el preview
+  useEffect(() => {
+    setPreview(null)
+    if (inputRef.current) inputRef.current.value = ""
+  }, [])
 
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("image/")) return
@@ -42,7 +48,6 @@ function ImageUploader({ onUpload }) {
         onChange={handleChange}
         style={{ display: "none" }}
       />
-
       {preview ? (
         <img
           src={preview}
