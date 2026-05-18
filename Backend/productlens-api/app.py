@@ -100,8 +100,8 @@ def predict():
     Recibe una imagen y devuelve la clasificación del modelo.
 
     Acepta:
-      - multipart/form-data  con campo 'imagen'
-      - application/json     con campo 'imagen' en base64
+      - multipart/form-data  con campo 'image'
+      - application/json     con campo 'image' en base64
 
     Devuelve JSON con clase predicha y confianza.
     """
@@ -111,26 +111,26 @@ def predict():
     image_bytes = None
 
     # Opción A: imagen subida como archivo (multipart)
-    if "imagen" in request.files:
-        file = request.files["imagen"]
+    if "image" in request.files:
+        file = request.files["image"]
         if file.filename == "":
-            return jsonify({"error": "El campo 'imagen' está vacío"}), 400
+            return jsonify({"error": "El campo 'image' está vacío"}), 400
         image_bytes = file.read()
 
     # Opción B: imagen en base64 dentro de JSON
     elif request.is_json:
         data = request.get_json()
-        if "imagen" not in data:
-            return jsonify({"error": "Falta el campo 'imagen' en el JSON"}), 400
+        if "image" not in data:
+            return jsonify({"error": "Falta el campo 'image' en el JSON"}), 400
         import base64
         try:
-            image_bytes = base64.b64decode(data["imagen"])
+            image_bytes = base64.b64decode(data["image"])
         except Exception:
             return jsonify({"error": "La imagen en base64 no es válida"}), 400
 
     else:
         return jsonify({
-            "error": "Envía la imagen como archivo multipart/form-data (campo 'imagen') "
+            "error": "Envía la imagen como archivo multipart/form-data (campo 'image') "
                      "o como base64 en JSON"
         }), 400
 
