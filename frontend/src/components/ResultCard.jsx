@@ -23,6 +23,10 @@ function ResultCard({ result }) {
       </div>
       <ConfidenceBar confidence={result.confidence} />
       <TopPredictions top3={result.top3} />
+      
+      <button onClick={() => { setResult(null) }}>
+        Clasificar otra imagen
+      </button>
     </div>
   )
 }
