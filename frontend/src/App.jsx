@@ -22,8 +22,9 @@ function App() {
 
     try {
       const formData = new FormData()
-      formData.append("image", file)
-      const res = await fetch("https://productlens-api.onrender.com/predict", {
+      formData.append("imagen", file)
+      const res = await fetch("https://productlens-plog.onrender.com/predict", {
+        
         method: "POST",
         body: formData,
       })
