@@ -133,7 +133,7 @@ function App() {
         )}
 
        
-        {result && <ResultCard result={result} />}
+        {result && <ResultCard result={result} setResult={setResult} />}
       </div>
     </div>
   )
