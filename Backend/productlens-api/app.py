@@ -111,20 +111,19 @@ def predict():
     image_bytes = None
 
     # Opción A: imagen subida como archivo (multipart)
-    if "image" in request.files:
-        file = request.files["image"]
+        if "imagen" in request.files:
         if file.filename == "":
-            return jsonify({"error": "El campo 'image' está vacío"}), 400
+            return jsonify({"error": "El campo 'imagen' está vacío"}), 400
         image_bytes = file.read()
 
     # Opción B: imagen en base64 dentro de JSON
     elif request.is_json:
         data = request.get_json()
         if "image" not in data:
-            return jsonify({"error": "Falta el campo 'image' en el JSON"}), 400
+            return jsonify({"error": "Falta el campo 'imagen' en el JSON"}), 400
         import base64
         try:
-            image_bytes = base64.b64decode(data["image"])
+            image_bytes = base64.b64decode(data["imagen"])
         except Exception:
             return jsonify({"error": "La imagen en base64 no es válida"}), 400
 
