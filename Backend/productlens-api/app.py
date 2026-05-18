@@ -14,7 +14,7 @@ from PIL import Image
 import tensorflow as tf
 
 app = Flask(__name__)
-CORS(app)
+CORS(app, origins=["https://productlensml.netlify.app", "http://localhost:5173"])
 
 CLASS_NAMES = ["cuidado_personal", "hogar_cocina"]
 IMG_SIZE = (224, 224)
