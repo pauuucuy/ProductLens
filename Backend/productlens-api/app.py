@@ -108,8 +108,8 @@ def predict():
 
     # ── Obtener imagen desde la request ────────────────────────────────────────
 
-    image_bytes = None
-
+   image_bytes = None
+            
     # Opción A: imagen subida como archivo (multipart)
     if "imagen" in request.files:
         file = request.files["imagen"]
@@ -133,7 +133,6 @@ def predict():
             "error": "Envía la imagen como archivo multipart/form-data (campo 'imagen') "
                      "o como base64 en JSON"
         }), 400
-
     # ── Preprocesar y predecir ─────────────────────────────────────────────────
 
     try:
