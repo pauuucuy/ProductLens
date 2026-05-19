@@ -4,7 +4,6 @@ import ResultCard from "./components/ResultCard"
 import { mockResult } from "./mockData"
 
 function App() {
-  
   // Estados principales de la aplicación
   const [result, setResult] = useState(null)      // Resultado de la predicción
   const [loading, setLoading] = useState(false)   // Indicador de carga
@@ -31,15 +30,21 @@ function App() {
       return
     }
 
-    // Si está en modo real, envía la imagen al backend
-    try {
-      const formData = new FormData()
-      formData.append("imagen", file) // El backend espera el campo "imagen"
-      const res = await fetch("https://productlens-plog.onrender.com/predict", {
-        method: "POST",
-        body: formData,
-      })
-      const data = await res.json()
+   // Si está en modo real, envía la imagen al backend
+try {
+  const formData = new FormData()
+  formData.append("imagen", file) // El backend espera el campo "imagen"
+  
+  // Usa localhost en desarrollo y Render en producción
+  const API_URL = window.location.hostname === "localhost"
+    ? "http://localhost:5000/predict"
+    : "https://productlens-plog.onrender.com/predict"
+
+  const res = await fetch(API_URL, {
+    method: "POST",
+    body: formData,
+  })
+  const data = await res.json()
 
       // Transforma la respuesta del backend al formato que usan los componentes
       const formatted = {
@@ -80,7 +85,8 @@ function App() {
           fontSize: "24px",
           fontWeight: "700",
           color: "#fff",
-          letterSpacing: "-0.5px"
+          letterSpacing: "-0.5px",
+          fontFamily: "'Poppins', sans-serif"
         }}>
           PRODUCTLENS
         </span>

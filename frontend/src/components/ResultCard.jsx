@@ -3,7 +3,7 @@ import TopPredictions from "./TopPredictions"
 
 // Componente principal de resultados
 // Muestra la categoría predicha, la barra de confianza y el top de predicciones
-function ResultCard({ result }) {
+function ResultCard({ result, setResult }) {
   return (
     <div style={{
       background: "#fff",
@@ -34,9 +34,23 @@ function ResultCard({ result }) {
       {/* Lista de predicciones */}
       <TopPredictions top3={result.top3} />
       
-      <button onClick={() => { setResult(null) }}>
-        Clasificar otra imagen
-      </button>
+      <button 
+  onClick={() => setResult(null)}
+  style={{
+    marginTop: "1rem",
+    width: "100%",
+    padding: "0.75rem",
+    background: "#6366F1",
+    color: "#fff",
+    border: "none",
+    borderRadius: "10px",
+    fontSize: "14px",
+    fontWeight: "500",
+    cursor: "pointer",
+  }}
+>
+  Clasificar otra imagen
+</button>
     </div>
   )
 }

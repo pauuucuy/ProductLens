@@ -21,7 +21,7 @@ import tensorflow as tf
 app = Flask(__name__)
 
 # Se habilita CORS para permitir peticiones desde el frontend en Netlify y desde localhost en desarrollo
-CORS(app, origins=["https://productlensml.netlify.app", "http://localhost:5173"])
+CORS(app, origins=["https://productlensml.netlify.app", "http://localhost:5173", "http://localhost:5176"])
 
 # Nombres de las clases en orden alfabetico, igual al orden que usa Keras con flow_from_directory
 # indice 0 -> cuidado_personal | indice 1 -> hogar_cocina

@@ -16,10 +16,10 @@ function TopPredictions({ top3 }) {
         }}>
           <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
             {/* Trofeo solo para la predicción principal */}
-            <span style={{ fontSize: "13px", color: index === 0 ? "#4F46E5" : "#64748B", fontWeight: index === 0 ? "600" : "400" }}>
+            <span style={{ fontSize: "13px", color: index === 0 ? "#4F46E5" : "#06B6D4", fontWeight: index === 0 ? "600" : "400" }}>
               {index === 0 ? "🏆 " : ""}{item.label}
             </span>
-            <span style={{ fontSize: "13px", fontWeight: "600", color: index === 0 ? "#4F46E5" : "#94A3B8" }}>
+            <span style={{ fontSize: "13px", fontWeight: "600", color: index === 0 ? "#4F46E5" : "#06B6D4" }}>
               {Math.round(item.probability * 100)}%
             </span>
           </div>
