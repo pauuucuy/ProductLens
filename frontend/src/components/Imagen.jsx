@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 
 // Componente de carga de imágenes
 // Soporta drag & drop y selección por botón

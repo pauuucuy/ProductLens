@@ -33,6 +33,10 @@ function ResultCard({ result }) {
 
       {/* Lista de predicciones */}
       <TopPredictions top3={result.top3} />
+      
+      <button onClick={() => { setResult(null) }}>
+        Clasificar otra imagen
+      </button>
     </div>
   )
 }
