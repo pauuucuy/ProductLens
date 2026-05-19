@@ -20,7 +20,8 @@ Dado una imagen, el modelo predice si el producto pertenece a la categoría
 
 ProductLens/
 frontend/          # Interfaz web en React + Vite
-Backend/productlens-api/ # API REST en Flask con modelo MobileNetV2
+Backend/
+productlens-api/ # API REST en Flask con modelo MobileNetV2
 
 ---
 
