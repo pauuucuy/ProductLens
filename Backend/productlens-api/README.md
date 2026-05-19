@@ -1,131 +1,134 @@
-# ProductLens API 🔍
+# ProductLens API
 
-Backend Flask que expone el modelo de clasificación de imágenes **ProductLens** como una API REST. Desplegado en [Render.com](https://render.com).
+Backend REST desarrollado con Flask que expone el modelo de clasificacion de imagenes ProductLens como una API en la nube. Desplegado en Render.com.
+
+URL en produccion: https://productlens-plog.onrender.com
 
 ---
 
-## Descripción
+## Descripcion del proyecto
 
-ProductLens clasifica imágenes de productos de consumo en dos categorías usando **MobileNetV2** con Transfer Learning. Las etiquetas fueron asignadas automáticamente con el modelo CLIP de OpenAI sobre un dataset de ~398.000 imágenes, seleccionando 7.400 imágenes balanceadas para el entrenamiento.
+ProductLens clasifica imagenes de productos de consumo en dos categorias usando MobileNetV2 con Transfer Learning. El modelo fue entrenado con aproximadamente 7.400 imagenes balanceadas, etiquetadas automaticamente con CLIP de OpenAI sobre un dataset de mas de 398.000 imagenes de productos.
 
-**Categorías:**
-| Índice | Clase | Descripción |
-|--------|-------|-------------|
-| 0 | `cuidado_personal` | Cosméticos, cremas, shampoo, maquillaje, higiene personal |
-| 1 | `hogar_cocina` | Utensilios de cocina, electrodomésticos, vajilla, almohadas |
+Categorias disponibles:
 
-**Arquitectura del modelo:**
-- Base: MobileNetV2 (preentrenado en ImageNet, fine-tuning últimas 30 capas)
-- Entrada: imagen RGB 224×224
-- Salida: 2 clases con probabilidades Softmax
+| Categoria | Ejemplos |
+|---|---|
+| cuidado_personal | Cremas, shampoo, perfumes, maquillaje, cosmeticos |
+| hogar_cocina | Ollas, utensilios, electrodomesticos, vajilla |
+
+Stack tecnico:
+- Backend: Python + Flask
+- Modelo: MobileNetV2 (Transfer Learning, fine-tuning ultimas 30 capas)
+- Despliegue backend: Render.com
+- Frontend: React + Vite desplegado en Netlify
 
 ---
 
 ## Estructura del proyecto
 
 ```
-productlens-api/
-├── app.py                    # API Flask principal
-├── productlens_model.keras   # Modelo entrenado
-├── requirements.txt          # Dependencias Python
-├── render.yaml               # Configuración de despliegue en Render
-└── README.md
+Backend/productlens-api/
+|-- app.py                    # API Flask, endpoints y logica de prediccion
+|-- productlens_model.keras   # Modelo entrenado (MobileNetV2)
+|-- requirements.txt          # Dependencias Python
+|-- render.yaml               # Configuracion de despliegue en Render
+|-- README.md                 # Este archivo
 ```
 
 ---
 
 ## Endpoints
 
-| Método | Ruta       | Descripción                        |
-|--------|------------|------------------------------------|
-| GET    | `/`        | Health check — API activa          |
-| GET    | `/info`    | Información del modelo             |
-| POST   | `/predict` | Clasificar una imagen de producto  |
+| Metodo | Ruta | Descripcion |
+|--------|------|-------------|
+| GET | / | Health check, verifica que la API esta activa |
+| GET | /info | Informacion del modelo (arquitectura y clases) |
+| POST | /predict | Clasificar una imagen de producto |
 
 ---
 
-## Uso del endpoint `/predict`
+## Uso del endpoint /predict
 
-### Opción A — Enviar imagen como archivo (recomendado)
+Enviar imagen como archivo multipart (recomendado):
 
 ```bash
-curl -X POST https://TU-API.onrender.com/predict \
+curl -X POST https://productlens-plog.onrender.com/predict \
      -F "imagen=@foto_producto.jpg"
 ```
 
-### Opción B — Enviar imagen en base64 (JSON)
-
-```bash
-# Convertir imagen a base64 primero
-BASE64=$(base64 -w 0 foto_producto.jpg)
-
-curl -X POST https://TU-API.onrender.com/predict \
-     -H "Content-Type: application/json" \
-     -d "{\"imagen\": \"$BASE64\"}"
-```
-
-### Respuesta de ejemplo
+Respuesta de ejemplo:
 
 ```json
 {
-  "clase_predicha": "Autentico",
+  "clase_predicha": "cuidado_personal",
   "confianza": 94.32,
   "probabilidades": {
-    "Autentico": 94.32,
-    "Falso": 5.68
+    "cuidado_personal": 94.32,
+    "hogar_cocina": 5.68
   }
 }
 ```
 
 ---
 
-## Cómo ejecutar localmente
+## Instrucciones para ejecutar localmente
 
 ### 1. Clonar el repositorio
 
 ```bash
-git clone https://github.com/TU_USUARIO/productlens-api.git
-cd productlens-api
+git clone https://github.com/pauuucuy/ProductLens.git
+cd ProductLens/Backend/productlens-api
 ```
 
-### 2. Instalar dependencias
+### 2. Crear entorno virtual
+
+```bash
+python -m venv venv
+venv\Scripts\activate        # Windows
+source venv/bin/activate     # Mac/Linux
+```
+
+### 3. Instalar dependencias
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Colocar el modelo
-
-Asegúrate de que `productlens_model.keras` esté en la raíz del proyecto.
-
-### 4. Ejecutar
+### 4. Ejecutar el servidor
 
 ```bash
 python app.py
 ```
 
-La API queda disponible en `http://localhost:5000`.
-
----
-
-## Despliegue en Render
-
-1. Sube el proyecto a un repositorio de GitHub (incluyendo el archivo `.keras`).
-2. Ve a [render.com](https://render.com) → **New Web Service**.
-3. Conecta el repositorio.
-4. Render detecta `render.yaml` automáticamente y configura el servicio.
-5. Haz clic en **Deploy** y espera ~5 minutos.
-6. Tu API queda disponible en `https://productlens-api.onrender.com`.
+La API queda disponible en http://localhost:5000.
 
 ---
 
 ## Dependencias
 
-| Librería         | Versión  | Uso                              |
-|------------------|----------|----------------------------------|
-| Flask            | 3.1.0    | Framework web / API REST         |
-| Flask-CORS       | 5.0.0    | Permitir peticiones cross-origin |
-| TensorFlow CPU   | 2.18.0   | Cargar y correr el modelo        |
-| Pillow           | 11.1.0   | Procesar imágenes                |
-| NumPy            | 1.26.4   | Operaciones numéricas            |
-| Gunicorn         | 23.0.0   | Servidor WSGI para producción    |
+| Libreria | Version | Uso |
+|---|---|---|
+| Flask | 3.1.0 | Framework web para construir la API REST |
+| Flask-CORS | 5.0.0 | Permite peticiones cross-origin desde el frontend |
+| TensorFlow CPU | 2.21.0 | Carga y ejecucion del modelo de clasificacion |
+| Pillow | 11.1.0 | Lectura y preprocesamiento de imagenes |
+| NumPy | 1.26.4 | Operaciones numericas sobre arrays |
+| Gunicorn | 23.0.0 | Servidor WSGI para produccion en Render |
+
+---
+
+## Despliegue en Render
+
+1. Subir el proyecto a GitHub incluyendo el archivo productlens_model.keras
+2. Ir a render.com y crear un nuevo Web Service
+3. Conectar el repositorio de GitHub
+4. Configurar los siguientes campos:
+   - Root Directory: Backend/productlens-api
+   - Language: Python
+   - Build Command: pip install -r requirements.txt
+   - Start Command: gunicorn app:app --workers 1 --timeout 120
+5. Hacer clic en Deploy Web Service
+
+Nota: en el plan gratuito de Render el servicio hiberna tras 15 minutos de inactividad.
+La primera peticion puede tardar hasta 30 segundos mientras el servidor se reactiva.
