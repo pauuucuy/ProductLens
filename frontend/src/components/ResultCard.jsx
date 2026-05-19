@@ -34,6 +34,7 @@ function ResultCard({ result, setResult }) {
       {/* Lista de predicciones */}
       <TopPredictions top3={result.top3} />
       
+      {/* Botón para limpiar el resultado y clasificar una nueva imagen */}
       <button 
   onClick={() => setResult(null)}
   style={{

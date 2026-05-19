@@ -21,18 +21,18 @@ Cuenta con un **modo demo** que permite probar la interfaz sin necesidad del bac
 
 1. Clona el repositorio:
 ```bash
-   git clone https://github.com/pauuucuy/ProductLens.git
-   cd ProductLens/frontend
+git clone https://github.com/pauuucuy/ProductLens.git
+cd ProductLens/frontend
 ```
 
 2. Instala las dependencias:
 ```bash
-   npm install
+npm install
 ```
 
 3. Inicia el servidor de desarrollo:
 ```bash
-   npm run dev
+npm run dev
 ```
 
 4. Abre el navegador en:
@@ -52,13 +52,11 @@ http://localhost:5173
 
 ## Conexión con el backend
 
-Cuando el backend esté disponible, asegúrate de que la URL en `src/App.jsx` apunte al endpoint correcto:
+La app detecta automáticamente el entorno y usa la URL correcta:
+- **Local:** `http://localhost:5000/predict`
+- **Producción:** `https://productlens-plog.onrender.com/predict`
 
-```js
-"const res = await fetch("http://localhost:5000/predict", {"
-```
-
-El backend debe recibir la imagen como `multipart/form-data` con el campo `imagen` y devolver:
+El backend recibe la imagen como `multipart/form-data` con el campo `imagen` y devuelve:
 
 ```json
 {
@@ -74,13 +72,12 @@ El backend debe recibir la imagen como `multipart/form-data` con el campo `image
 ---
 
 ## Estructura del proyecto
-
 frontend/
 src/
 components/
-ImageUploader.jsx    # Zona de carga de imágenes (drag & drop + botón)
+Imagen.jsx           # Zona de carga de imágenes (drag & drop + botón)
 ResultCard.jsx       # Tarjeta principal de resultados
-ConfidenceBar.jsx    # Barra de confianza con color dinámico
+Barra.jsx            # Barra de confianza con color dinámico
 TopPredictions.jsx   # Lista de predicciones con barras
 App.jsx                # Componente principal y lógica de fetch
 mockData.js            # Datos simulados para el modo demo
@@ -92,5 +89,5 @@ package.json
 ## Tecnologías usadas
 - React 19
 - Vite
+- Google Fonts (Poppins)
 - CSS en línea (sin librerías externas)
-
