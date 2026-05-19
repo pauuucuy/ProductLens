@@ -21,19 +21,31 @@ function App() {
     }
 
     try {
-      const formData = new FormData()
-      formData.append("image", file)
-      const res = await fetch("http://localhost:5000/predict", {
-        method: "POST",
-        body: formData,
-      })
-      const data = await res.json()
-      setResult(data)
-    } catch (error) {
-      alert("Error conectando con el backend")
-    } finally {
-      setLoading(false)
-    }
+  const formData = new FormData()
+  formData.append("imagen", file)
+  const res = await fetch("http://localhost:5000/predict", {
+    method: "POST",
+    body: formData,
+  })
+  const data = await res.json()
+  const formatted = {
+    predicted_class: data.clase_predicha === "hogar_cocina"
+      ? "Artículos para el hogar y la cocina"
+      : "Cuidado personal y belleza",
+    confidence: data.confianza / 100,
+    top3: Object.entries(data.probabilidades).map(([label, prob]) => ({
+      label: label === "hogar_cocina"
+        ? "Artículos para el hogar y la cocina"
+        : "Cuidado personal y belleza",
+      probability: prob / 100
+    }))
+  }
+  setResult(formatted)
+} catch (error) {
+  alert("Error conectando con el backend")
+} finally {
+  setLoading(false)
+}
   }
 
   return (

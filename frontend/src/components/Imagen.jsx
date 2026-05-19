@@ -1,18 +1,23 @@
 import { useRef, useState } from "react"
 
+// Componente de carga de imágenes
+// Soporta drag & drop y selección por botón
 function ImageUploader({ onUpload }) {
-  const [preview, setPreview] = useState(null)
-  const [dragging, setDragging] = useState(false)
-  const inputRef = useRef(null)
+  const [preview, setPreview] = useState(null)   // URL de previsualización de la imagen
+  const [dragging, setDragging] = useState(false) // Estado visual del drag & drop
+  const inputRef = useRef(null)                   // Referencia al input de archivo oculto
 
+  // Procesa el archivo seleccionado y genera la previsualización
   const handleFile = (file) => {
     if (!file || !file.type.startsWith("image/")) return
-    setPreview(URL.createObjectURL(file))
-    onUpload(file)
+    setPreview(URL.createObjectURL(file)) // Crea URL temporal para mostrar la imagen
+    onUpload(file)                         // Envía el archivo al componente padre
   }
 
+  // Maneja la selección desde el input de archivo
   const handleChange = (e) => handleFile(e.target.files[0])
 
+  // Maneja cuando el usuario suelta la imagen en la zona de drop
   const handleDrop = (e) => {
     e.preventDefault()
     setDragging(false)
@@ -24,7 +29,7 @@ function ImageUploader({ onUpload }) {
       onDragOver={(e) => { e.preventDefault(); setDragging(true) }}
       onDragLeave={() => setDragging(false)}
       onDrop={handleDrop}
-      onClick={() => inputRef.current.click()}
+      onClick={() => inputRef.current.click()} // Abre el selector de archivos al hacer clic
       style={{
         border: dragging ? "2px solid #1D9E75" : "2px dashed #ccc",
         borderRadius: "12px",
@@ -35,6 +40,7 @@ function ImageUploader({ onUpload }) {
         transition: "all 0.2s ease",
       }}
     >
+      {/* Input oculto que maneja la selección real del archivo */}
       <input
         ref={inputRef}
         type="file"
@@ -43,6 +49,7 @@ function ImageUploader({ onUpload }) {
         style={{ display: "none" }}
       />
 
+      {/* Muestra preview si hay imagen, o instrucciones si no */}
       {preview ? (
         <img
           src={preview}
